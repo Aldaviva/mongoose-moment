@@ -1,6 +1,6 @@
 {
 	"name": "mongoose-moment",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"author": "Ben Hutchison <ben@aldaviva.com>",
 	"description": "Adds Moment storage support to Mongoose",
 	"main": "index.js",
