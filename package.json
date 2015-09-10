@@ -1,7 +1,10 @@
 {
 	"name": "mongoose-moment",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"author": "Ben Hutchison <ben@aldaviva.com>",
+	"contributors": [
+		"Brad Decker (https://github.com/brad-decker)"
+	],
 	"description": "Adds Moment storage support to Mongoose",
 	"main": "index.js",
 	"devDependencies": {
