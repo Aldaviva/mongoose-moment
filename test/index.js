@@ -46,14 +46,7 @@ describe('MongooseMoment', function(){
 		before(function(done){
 			db = mongoose.createConnection('localhost', 'mongoose_moment')
 			db.once('open', function () {
-				schema = new Schema({
-						m: 'Moment'
-					, docs: [{ m: 'Moment' }]
-				});
-				S = db.model('MomentModel', schema);
-				db.db.dropDatabase(function(){
-					done();
-				});
+        done();
 			});
 		});
 
@@ -63,7 +56,23 @@ describe('MongooseMoment', function(){
 			});
 		});
 
+    it('create model', function(done){
+      schema = new Schema({
+          m: {type: 'Moment', default: Moment("12-25-1995", "MM-DD-YYYY")}
+        , docs: [{ m: 'Moment' }]
+      });
+      S = db.model('MomentModel', schema);
+      done();
+    });
+
 		describe('casts', function(){
+      it('default', function(done){
+        var s = new S({});//note no value for m is
+        assert.ok(Moment.isMoment(s.m), 'isMoment('+s.m+') = false');
+        assert.ok(new Moment("12-25-1995", "MM-DD-YYYY").isSame(s.m), "correct value");
+        done();
+      });
+
 			it('null', function(done){
 				var s = new S({ m: null });
 				assert.equal(s.m, null);
