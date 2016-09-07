@@ -76,19 +76,6 @@ describe('MongooseMoment', function(){
 				assert.ok(new Moment('2013-02-08').isSame(s.m), "correct value");
 				done();
 			});
-
-			it('non-castables produce _saveErrors', function(done){
-				var schema = new Schema({ date: 'Moment' }, { strict: 'throw' });
-				var M = db.model('throws', schema);
-				var m = new M({ date: "not a real date" });
-				m.save(function (err) {
-					console.log( err );
-					assert.ok(err, 'error expected');
-					assert.equal('moment', err.type, 'wrong type');
-					assert.equal('CastError', err.name, 'wrong name');
-					done();
-				});
-			});
 		});
 
 		describe('with db', function(){
