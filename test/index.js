@@ -85,12 +85,12 @@ describe('MongooseMoment', function(){
     });
 
 		describe('casts', function(){
-      it('default', function(done){
-        var s = new S({});//note no value for m is
-        assert.ok(Moment.isMoment(s.m), 'isMoment('+s.m+') = false');
-        assert.ok(new Moment("12-25-1995", "MM-DD-YYYY").isSame(s.m), "correct value");
-        done();
-      });
+            it('default', function(done){
+              var s = new S({});//note no value for m is
+              assert.ok(Moment.isMoment(s.m), 'isMoment('+s.m+') = false');
+              assert.ok(new Moment("12-25-1995", "MM-DD-YYYY").isSame(s.m), "correct value");
+              done();
+            });
 
 			it('null', function(done){
 				var s = new S({ m: null });
@@ -104,22 +104,6 @@ describe('MongooseMoment', function(){
 				assert.ok(new Moment('2013-02-08').isSame(s.m), "correct value");
 				done();
 			});
-<<<<<<< HEAD
-=======
-
-			it('non-castables produce _saveErrors', function(done){
-				var schema = new Schema({ date: 'Moment' }, { strict: 'throw' });
-				var M = db.model('throws', schema);
-				var m = new M({ date: "not a real date" });
-				m.save(function (err) {
-					console.log( err );
-					assert.ok(err, 'error expected');
-					assert.equal('moment', err.type, 'wrong type');
-					assert.equal('CastError', err.name, 'wrong name');
-					done();
-				});
-			});
->>>>>>> 32f45c3c0cf9eeeeea264e5e1baffc12060dc2c9
 		});
 
 		describe('with db', function(){
