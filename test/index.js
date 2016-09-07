@@ -34,25 +34,10 @@ describe('MongooseMoment', function(){
 	 * Fixing this would require a moment.js code change.
 	*/
 	it('can be used in schemas', function(){
-		// var s = new Schema({ m: MongooseMoment });
-		// var m = s.path('m')
-		// assert.ok(m instanceof mongoose.SchemaType);
-		// assert.equal('function', typeof m.get);
-
 		var s = new Schema({ m: 'Moment' });
 		var m = s.path('m')
 		assert.ok(m instanceof mongoose.SchemaType);
 		assert.equal('function', typeof m.get);
-
-		var s = new Schema({ m: 'moment' });
-		var m = s.path('m')
-		assert.ok(m instanceof mongoose.SchemaType);
-		assert.equal('function', typeof m.get);
-
-		// var s = new Schema({ m: Moment });
-		// var m = s.path('m')
-		// assert.ok(m instanceof mongoose.SchemaType);
-		// assert.equal('function', typeof m.get);
 	});
 
 	describe('integration', function(){
@@ -92,31 +77,7 @@ describe('MongooseMoment', function(){
 				done();
 			});
 
-			// describe('instanceof Moment', function(){
-			// 	it('retains flags', function(done){
-			// 		var s = new S({ reg: new RegExp('mongodb', 'img') });
-			// 		assert.ok(s.reg instanceof RegExp);
-			// 		assert.equal(s.reg.source, 'mongodb');
-			// 		assert.ok(s.reg.ignoreCase);
-			// 		assert.ok(s.reg.global);
-			// 		assert.ok(s.reg.multiline);
-			// 		done();
-			// 	})
-			// })
-
-			// describe('RegExp literals', function(){
-			// 	it('retains flags', function(done){
-			// 		var s = new S({ reg: /mongodb/img });
-			// 		assert.ok(s.reg instanceof RegExp);
-			// 		assert.equal(s.reg.source, 'mongodb');
-			// 		assert.ok(s.reg.ignoreCase);
-			// 		assert.ok(s.reg.global);
-			// 		assert.ok(s.reg.multiline);
-			// 		done();
-			// 	})
-			// })
-
-			/*it('non-castables produce _saveErrors', function(done){
+			it('non-castables produce _saveErrors', function(done){
 				var schema = new Schema({ date: 'Moment' }, { strict: 'throw' });
 				var M = db.model('throws', schema);
 				var m = new M({ date: "not a real date" });
@@ -127,7 +88,7 @@ describe('MongooseMoment', function(){
 					assert.equal('CastError', err.name, 'wrong name');
 					done();
 				});
-			});*/
+			});
 		});
 
 		describe('with db', function(){
@@ -158,16 +119,6 @@ describe('MongooseMoment', function(){
 					done();
 				});
 			});
-
-			// it('find with RegExp literal', function(done){
-			// 	S.find({ reg: /mongodb/i }, function (err, docs) {
-			// 		assert.ifError(err);
-			// 		assert.equal(1, docs.length);
-			// 		var doc = docs[0];
-			// 		assert.equal(id, doc.id);
-			// 		done();
-			// 	});
-			// })
 
 			it('findOne matching null', function(done){
 				S.create({ m: null }, function (err, doc_) {
