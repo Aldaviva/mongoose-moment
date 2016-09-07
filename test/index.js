@@ -41,7 +41,7 @@ describe('MongooseMoment', function(){
 	});
 
 	describe('integration', function(){
-		var db, S, schema, id;
+		var db, S, R, N, schema, id;
 
 		before(function(done){
 			db = mongoose.createConnection('localhost', 'mongoose_moment')
@@ -58,10 +58,29 @@ describe('MongooseMoment', function(){
 
     it('create model', function(done){
       schema = new Schema({
-          m: {type: 'Moment', default: Moment("12-25-1995", "MM-DD-YYYY")}
-        , docs: [{ m: 'Moment' }]
+          m: {type: 'Moment', default: Moment("12-25-1995", "MM-DD-YYYY")},
+          docs: [{ m: 'Moment' }]
       });
       S = db.model('MomentModel', schema);
+      done();
+    });
+
+    it('create model with required moment property', function(done){
+      schema = new Schema({
+          m: {type: 'Moment', required: true},
+          docs: [{ m: 'Moment' }]
+      });
+      R = db.model('MomentModelRequired', schema);
+      done();
+    });
+
+    it('create model with normal moment property and required moment property', function(done){
+      schema = new Schema({
+          n: 'Moment',
+          m: {type: 'Moment', required: true},
+          docs: [{ m: 'Moment' }]
+      });
+      N = db.model('MomentModelNormalRequired', schema);
       done();
     });
 
@@ -85,10 +104,26 @@ describe('MongooseMoment', function(){
 				assert.ok(new Moment('2013-02-08').isSame(s.m), "correct value");
 				done();
 			});
+<<<<<<< HEAD
+=======
+
+			it('non-castables produce _saveErrors', function(done){
+				var schema = new Schema({ date: 'Moment' }, { strict: 'throw' });
+				var M = db.model('throws', schema);
+				var m = new M({ date: "not a real date" });
+				m.save(function (err) {
+					console.log( err );
+					assert.ok(err, 'error expected');
+					assert.equal('moment', err.type, 'wrong type');
+					assert.equal('CastError', err.name, 'wrong name');
+					done();
+				});
+			});
+>>>>>>> 32f45c3c0cf9eeeeea264e5e1baffc12060dc2c9
 		});
 
 		describe('with db', function(){
-			var id;
+			var id, r_id, n_id;
 			// mongoose.set('debug', true);
 
 			it('save', function(done){
@@ -100,6 +135,33 @@ describe('MongooseMoment', function(){
 				s.save(function (err) {
 					assert.ifError(err);
 					id = s.id;
+					done();
+				})
+			});
+
+      it('save instance of model with required property', function(done){
+
+				var r = new R({
+						m: new Moment("12-25-1995", "MM-DD-YYYY")
+					, docs: [null, { m: new Moment({years: 2010, months: 3, days: 5, hours: 15, minutes: 10, seconds: 3, milliseconds: 123}) } ]
+				});
+				r.save(function (err) {
+					assert.ifError(err);
+					r_id = r.id;
+					done();
+				})
+			});
+
+      it('save instance of model with normal property and required', function(done){
+
+				var n = new N({
+          m: new Moment("12-25-1995", "MM-DD-YYYY"),
+          n: new Moment("12-25-1995", "MM-DD-YYYY"),
+					docs: [null, { m: new Moment({years: 2010, months: 3, days: 5, hours: 15, minutes: 10, seconds: 3, milliseconds: 123}) } ]
+				});
+				n.save(function (err) {
+					assert.ifError(err);
+					n_id = n.id;
 					done();
 				})
 			});
@@ -168,7 +230,7 @@ describe('MongooseMoment', function(){
 			});
 
 			describe('is updateable', function(){
-				it('in general', function(done){
+        it('in general', function(done){
 					S.findById(id, function (err, doc) {
 						assert.ifError(err);
 
@@ -184,6 +246,37 @@ describe('MongooseMoment', function(){
 							S.findById(id, function (err, doc) {
 								assert.ifError(err);
 								assert.ok(doc.m.isSame(new Moment("12-26-1995", "MM-DD-YYYY")));
+								done();
+							});
+						});
+					});
+				});
+        it('with required property', function(done){
+					R.findById(r_id, function (err, doc) {
+						assert.ifError(err);
+
+						doc.m = new Moment("12-26-1995", "MM-DD-YYYY");
+						doc.save(function (err) {
+							assert.ifError(err);
+							R.findById(r_id, function (err, doc) {
+								assert.ifError(err);
+								assert.ok(doc.m.isSame(new Moment("12-26-1995", "MM-DD-YYYY")));
+								done();
+							});
+						});
+					});
+				});
+        it('with normal property and required property', function(done){
+					N.findById(n_id, function (err, doc) {
+						assert.ifError(err);
+
+            console.log(JSON.stringify(doc));
+						doc.n = new Moment("12-26-1995", "MM-DD-YYYY");
+						doc.save(function (err) {
+							assert.ifError(err);
+							N.findById(n_id, function (err, doc) {
+								assert.ifError(err);
+								assert.ok(doc.n.isSame(new Moment("12-26-1995", "MM-DD-YYYY")));
 								done();
 							});
 						});
