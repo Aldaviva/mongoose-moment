@@ -44,16 +44,16 @@ describe('MongooseMoment', function(){
 		var db, S, R, N, schema, id;
 
 		before(function(done){
-			db = mongoose.createConnection('localhost', 'mongoose_moment')
+			db = mongoose.createConnection('localhost', 'mongoose_moment');
 			db.once('open', function () {
-        done();
+				db.db.dropDatabase(function(){
+					done();
+				});
 			});
 		});
 
 		after(function(done){
-			db.db.dropDatabase(function () {
-				db.close(done);
-			});
+			db.close(done);
 		});
 
     it('create model', function(done){
@@ -102,6 +102,13 @@ describe('MongooseMoment', function(){
 				var s = new S({ m: '2013-02-08' });
 				assert.ok(Moment.isMoment(s.m), 'isMoment('+s.m+') = false');
 				assert.ok(new Moment('2013-02-08').isSame(s.m), "correct value");
+				done();
+			});
+
+			it('milliseconds', function(done){
+				var s = new S({ m: 1479168000000 });
+				assert.ok(Moment.isMoment(s.m), 'isMoment('+s.m+') = false');
+				assert.ok(new Moment('2016-11-15T00:00:00Z').isSame(s.m), "correct value");
 				done();
 			});
 		});
