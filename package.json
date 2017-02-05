@@ -1,6 +1,6 @@
 {
 	"name": "mongoose-moment",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"author": "Ben Hutchison <ben@aldaviva.com>",
 	"contributors": [
 		"Brad Decker (https://github.com/brad-decker)",
@@ -8,6 +8,7 @@
 		"Michaël Dierick (https://github.com/MikiDi)"
 	],
 	"description": "Adds Moment storage support to Mongoose",
+	"license": "Apache-2.0",
 	"main": "index.js",
 	"devDependencies": {
 		"mocha"    : "*",
